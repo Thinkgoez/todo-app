@@ -89,7 +89,7 @@ export const addNote = title => async dispatch => {
 }
 
 export const removeNote = id => async (dispatch) => {
-    await firebaseApi.delete(id);
+    let res = await firebaseApi.deleteNote(id);
 
     dispatch({
         type: REMOVE_NOTE,
