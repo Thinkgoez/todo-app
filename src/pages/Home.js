@@ -7,6 +7,16 @@ import { Loader } from '../components/Loader';
 import { connect } from 'react-redux';
 import { fetchNotes, removeNote } from '../redux/firebaseReducer';
 
+type Props = {
+    ...MapStateToProps,
+    fetchNotes: () => void, 
+    removeNote: (id:string) => void
+};
+type MapStateToProps = {
+    loading: boolean,
+    notes: Array<Object>,
+};
+
 const Home = ({loading, notes, fetchNotes, removeNote}): React.Node => {
     useEffect(() => {
         fetchNotes()
@@ -25,9 +35,9 @@ const Home = ({loading, notes, fetchNotes, removeNote}): React.Node => {
     )
 }
 
-const mapD = state => ({
+const mapS = state => ({
     loading: state.firebase.loading,
     notes: state.firebase.notes
 })
 
-export default connect(mapD, {fetchNotes, removeNote})(Home)
+export default (connect<Props, _, _, _, _, _,>(mapS, {fetchNotes, removeNote})(Home): React.AbstractComponent<{}>)

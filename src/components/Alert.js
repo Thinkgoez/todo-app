@@ -4,6 +4,17 @@ import { connect } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import { hide } from '../redux/alertReducer';
 
+type MapStateToProps = {
+    visible: boolean,
+    text: string,
+    type: string,
+};
+type Props = {
+    ...MapStateToProps,
+    hide:() => void
+};
+
+
 const Alert = ({ visible, type, text, hide }): React.Node => {
     return (
         <CSSTransition
@@ -26,9 +37,9 @@ const Alert = ({ visible, type, text, hide }): React.Node => {
         </CSSTransition>
     );
 }
-const mapDispatchToProps = state => ({
+const mapStateToProps = (state: Object): Object => ({
     visible: state.alert.visible,
     text: state.alert.text,
     type: state.alert.type,
-})
-export default connect(mapDispatchToProps, { hide })(Alert)
+}: MapStateToProps)
+export default (connect<Props, _, _, _, _, _,>(mapStateToProps, { hide })(Alert): React.AbstractComponent<{}>)

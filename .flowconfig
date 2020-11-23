@@ -6,10 +6,10 @@
 .*/src/serviceWorker\.js
 .*/src/setupTests\.js
 .*/src/index\.js
-.*/src/context/.*
 .*/src/redux/.*
-!.*/src/context/alert/alertContext\.*
-!.*/src/context/firebase/firebaseContext\.*
+!.*/src/redux/alertReducer\.js
+!.*/src/redux/firebaseReducer\.js
+!.*/src/redux/types\.js
 .*/src/App\.js
 
 

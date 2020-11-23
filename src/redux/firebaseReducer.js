@@ -1,21 +1,16 @@
 //@flow
-import axios from 'axios';
-import { firebaseApi } from '../api/api'
-import { SHOW_LOADER, REQUEST_NOTES, FETCH_NOTES} from './types';
+import {
+    SHOW_LOADER, REQUEST_NOTES, FETCH_NOTES, REQUEST_ADD_NOTE, ADD_NOTE,
+    REQUEST_REMOVE_NOTE, REMOVE_NOTE
+} from './types';
 
-const url = "https://react-note-be61d.firebaseio.com";
-
-const ADD_NOTE = 'ADD_NOTE',
-    REMOVE_NOTE = 'REMOVE_NOTE';
-
-type ShowLoader = { type: SHOW_LOADER }
-type PromiseAction = Promise<Action>;
-type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
-type Dispatch = (action: Action | ThunkAction | PromiseAction) => any;
-type Action = ShowLoader
+type ShowLoader = { type: string }
+type FetchNotes = { type: string }
+type RemoveNote = { type: string, id: number }
+type AddNote = { type: string, note: { title: string, date: string } }
 
 type State = {
-    notes: ?Array<{
+    notes: Array<{
         id: string,
         title: string,
         date: string
@@ -23,12 +18,12 @@ type State = {
     loading: boolean
 }
 
-const initialState: State = {
+const initialState: Object = {
     notes: [],
     loading: false
 }
 
-export const firebaseReducer = (state: State = initialState, action: Action) => {
+export const firebaseReducer = (state: State = initialState, action: Object): Object=> {
     switch (action.type) {
         case SHOW_LOADER:
             return { ...state, loading: true }
@@ -50,49 +45,6 @@ export const firebaseReducer = (state: State = initialState, action: Action) => 
 }
 
 export const showLoader = (): ShowLoader => ({ type: SHOW_LOADER })
-
-export const fetchNotes = () => async (dispatch) => {
-    // showLoader();
-    // const res = await axios.get(`${url}/notes.json`);
-
-    // const payload = Object.keys(res.data).map(key => {
-    //     return {
-    //         ...res.data[key],
-    //         id: key
-    //     }
-    // })
-
-    dispatch({ type: REQUEST_NOTES })
-}
-
-export const addNote = title => async dispatch => {
-    const note = {
-        title, date: new Date().toJSON()
-    }
-
-    try {
-        const res = await axios.post(`${url}/notes.json`, note);
-        const payload = {
-            ...note,
-            id: res.data.name
-        }
-
-        dispatch({
-            type: ADD_NOTE,
-            payload
-        })
-
-    } catch (e) {
-        throw new Error(e.message);
-    }
-
-}
-
-export const removeNote = id => async (dispatch) => {
-    let res = await firebaseApi.deleteNote(id);
-
-    dispatch({
-        type: REMOVE_NOTE,
-        payload: id
-    })
-}
+export const fetchNotes = (): FetchNotes => ({ type: REQUEST_NOTES })
+export const removeNote = (id: number): RemoveNote => ({ type: REQUEST_REMOVE_NOTE, id })
+export const addNote = (title: string): AddNote => ({ type: REQUEST_ADD_NOTE, note: { title, date: new Date().toJSON() } })

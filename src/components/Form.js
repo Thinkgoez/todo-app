@@ -5,6 +5,11 @@ import { connect } from 'react-redux';
 import {show} from '../redux/alertReducer'
 import { addNote } from '../redux/firebaseReducer';
 
+type Props = {
+    show: (s: string) => void,
+    addNote: (s: string) => void
+};
+
 const Form = ({show, addNote}): React.Node => {
     const [value, setValue] : [string, ((string => string) | string) => void] = useState('');
 
@@ -12,11 +17,7 @@ const Form = ({show, addNote}): React.Node => {
         event.preventDefault();
 
         if (value.trim()) {
-            addNote(value.trim()).then(() => {
-                show('Заметка была создана!', 'success');
-            }).catch(() => {
-                show('Что-то пошло не так', 'danger');
-            })
+            addNote(value.trim())
 
             setValue('');
         } else {
@@ -40,4 +41,4 @@ const Form = ({show, addNote}): React.Node => {
     );
 }
 
-export default connect(null, {show, addNote})(Form)
+export default (connect<Props, _, _, _, _, _,>(null, {show, addNote})(Form): React.AbstractComponent<{}>)

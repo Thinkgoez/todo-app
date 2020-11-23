@@ -1,6 +1,5 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import thunk from 'redux-thunk'
 import { alertReducer } from './alertReducer'
 import { firebaseReducer } from './firebaseReducer'
 import { sagaWatcher } from './sagas'
@@ -12,7 +11,7 @@ const reducers = combineReducers({
     firebase: firebaseReducer,
 })
 
-const store = createStore(reducers, applyMiddleware(sagaMiddleware, thunk)) // !вклинились в конвеер
+const store = createStore(reducers, applyMiddleware(sagaMiddleware)) // !вклинились в конвеер
 
 sagaMiddleware.run(sagaWatcher)
 
