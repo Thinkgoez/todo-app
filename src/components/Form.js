@@ -18,13 +18,10 @@ const Form = ({show, addNote}): React.Node => {
 
         if (value.trim()) {
             addNote(value.trim())
-
             setValue('');
         } else {
             show('Введите название заметки!');
         }
-
-        // alert.show(value, 'success');
     }
     return (
         <form onSubmit={submitHandler}>

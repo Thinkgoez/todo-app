@@ -8,3 +8,5 @@ export const REMOVE_NOTE: string = 'REMOVE_NOTE';
 export const REQUEST_ADD_NOTE: string = 'REQUEST_ADD_NOTE';
 export const REQUEST_REMOVE_NOTE: string = 'REQUEST_REMOVE_NOTE';
 export const ADD_NOTE: string = 'ADD_NOTE';
+export const REQUEST_COMPLETE_NOTE: string = 'REQUEST_COMPLETE_NOTE';
+export const COMPLETE_NOTE: string = 'COMPLETE_NOTE';

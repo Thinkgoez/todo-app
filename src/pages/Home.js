@@ -1,37 +1,39 @@
 //@flow
 import * as React from 'react'
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import Form from '../components/Form';
 import { Notes } from '../components/Notes';
 import { Loader } from '../components/Loader';
 import { connect } from 'react-redux';
-import { fetchNotes, removeNote } from '../redux/firebaseReducer';
+import { fetchNotes, removeNote, onChangeCompleteNote } from '../redux/firebaseReducer';
 
-type Props = {
-    ...MapStateToProps,
-    fetchNotes: () => void, 
-    removeNote: (id:string) => void
-};
 type MapStateToProps = {
     loading: boolean,
     notes: Array<Object>,
 };
+type Props = {
+    ...MapStateToProps,
+    fetchNotes: () => void,
+    removeNote: (id: string) => void,
+    onCompleteNote: (id: string) => void
+};
 
-const Home = ({loading, notes, fetchNotes, removeNote}): React.Node => {
+
+const Home = ({ loading, notes, fetchNotes, removeNote, onChangeCompleteNote }): React.Node => {
     useEffect(() => {
         fetchNotes()
         // eslint-disable-next-line
     }, []);
 
     return (
-        <Fragment>
+        <>
             <Form />
             <hr />
             {loading
                 ? <Loader />
-                : <Notes notes={notes} onRemove={removeNote} />
+                : <Notes notes={notes} onRemove={removeNote} onCompleteNote={onChangeCompleteNote} />
             }
-        </Fragment>
+        </>
     )
 }
 
@@ -40,4 +42,4 @@ const mapS = state => ({
     notes: state.firebase.notes
 })
 
-export default (connect<Props, _, _, _, _, _,>(mapS, {fetchNotes, removeNote})(Home): React.AbstractComponent<{}>)
+export default (connect<Props, _, _, _, _, _,>(mapS, { fetchNotes, removeNote, onChangeCompleteNote })(Home): React.AbstractComponent<{}>)

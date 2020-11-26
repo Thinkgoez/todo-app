@@ -15,6 +15,12 @@ export const Navbar = (): React.Node => (
             <li className="nav-item">
                 <NavLink className="nav-link" to="/about">Информация</NavLink>
             </li>
+            <li className="nav-item">
+                <NavLink className="nav-link" to="/sign-up">Зарегистрироватся</NavLink>
+            </li>
+            <li className="nav-item">
+                <NavLink className="nav-link" to="/sign-in">Логинизироваться</NavLink>
+            </li>
         </ul>
     </nav>
 )

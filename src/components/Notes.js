@@ -22,18 +22,27 @@ const Notes = (props: Props): React.Node => {
                         classNames={'note'}
                         timeout={800}
                     >
-                        <li className="list-group-item note" >
-                            <div>
-                                <strong>{note.title}</strong>
-                                <small>{new Date(note.date).toLocaleString()}</small>
+                        <li className={`d-flex list-group-item note${note.completed ? ' completed' : ''}`} >
+                            <div className='d-flex align-items-center'>
+                                <input
+                                    type="checkbox"
+                                    checked={note.completed}
+                                    onChange={() => { props.onCompleteNote(note) }}
+                                />&nbsp;&nbsp;
+                                <div className={'info'}>
+                                    <strong>{note.title}</strong>
+                                    <small>{new Date(note.date).toLocaleString()}</small>
+                                </div>
                             </div>
-                            <button
-                                type="button"
-                                className="btn btn-outline-danger btn-sm"
-                                onClick={() => props.onRemove(note.id)}
-                            >
-                                &times;  {/* Крестик */}
-                            </button>
+                            <div>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-danger btn-sm"
+                                    onClick={() => props.onRemove(note.id)}
+                                >
+                                    &times;  {/* Крестик */}
+                                </button>
+                            </div>
                         </li>
                     </CSSTransition>
                 ))
