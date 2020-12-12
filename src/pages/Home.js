@@ -1,37 +1,25 @@
-//@flow
 import * as React from 'react'
 import { useEffect } from 'react';
 import Form from '../components/Form';
-import { Notes } from '../components/Notes';
+import Projects from '../components/Projects';
 import { Loader } from '../components/Loader';
 import { connect } from 'react-redux';
-import { fetchNotes, removeNote, onChangeCompleteNote } from '../redux/firebaseReducer';
+import { addProject, fetchProjects, removeProject, setCurrentProject } from '../redux/firebaseReducer';
 
-type MapStateToProps = {
-    loading: boolean,
-    notes: Array<Object>,
-};
-type Props = {
-    ...MapStateToProps,
-    fetchNotes: () => void,
-    removeNote: (id: string) => void,
-    onCompleteNote: (id: string) => void
-};
-
-
-const Home = ({ loading, notes, fetchNotes, removeNote, onChangeCompleteNote }): React.Node => {
+const Home = ({ projects, addProject, setCurrentProject, loading, removeProject, userID, ...props }) => {
     useEffect(() => {
-        fetchNotes()
-        // eslint-disable-next-line
-    }, []);
+        if (!!userID) {
+            props.fetchProjects(userID)
+        }
+    }, [userID, props.fetchProjects])
 
     return (
         <>
-            <Form />
+            <Form handleSubmit={(fromData) => addProject(fromData.formValue, 'second', userID)} />
             <hr />
             {loading
                 ? <Loader />
-                : <Notes notes={notes} onRemove={removeNote} onCompleteNote={onChangeCompleteNote} />
+                : <Projects projects={projects} removeProject={removeProject} setCurrentProject={setCurrentProject} />
             }
         </>
     )
@@ -39,7 +27,8 @@ const Home = ({ loading, notes, fetchNotes, removeNote, onChangeCompleteNote }):
 
 const mapS = state => ({
     loading: state.firebase.loading,
-    notes: state.firebase.notes
+    userID: state.firebase.userID,
+    projects: state.firebase.projects,
 })
 
-export default (connect<Props, _, _, _, _, _,>(mapS, { fetchNotes, removeNote, onChangeCompleteNote })(Home): React.AbstractComponent<{}>)
+export default connect(mapS, { removeProject, fetchProjects, setCurrentProject, addProject })(Home)

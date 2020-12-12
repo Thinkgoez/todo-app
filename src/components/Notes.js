@@ -1,54 +1,51 @@
-//@flow
 import *as React from 'react';
 // import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
-type Props = {
-    notes: Array<{
-        id: string,
-        title: string,
-        date: string
-    }>,
-    onRemove: (id: string) => void,
-}
 
-const Notes = (props: Props): React.Node => {
+const Notes = ({ notes, onRemove, onCompleteNote, ...props }) => {
     return (
-        <TransitionGroup component="ul" className="list-group">
-            {
-                props.notes.map(note => (
-                    <CSSTransition
-                        key={note.id}
-                        classNames={'note'}
-                        timeout={800}
-                    >
-                        <li className={`d-flex list-group-item note${note.completed ? ' completed' : ''}`} >
-                            <div className='d-flex align-items-center'>
-                                <input
-                                    type="checkbox"
-                                    checked={note.completed}
-                                    onChange={() => { props.onCompleteNote(note) }}
-                                />&nbsp;&nbsp;
+        <>
+            <h3>Task list</h3>
+            { notes.length !== 0 ?
+                <TransitionGroup component="ul" className="list-group">
+                    {notes.map(note => (
+                        <CSSTransition
+                            key={note.id}
+                            classNames={'note'}
+                            timeout={800}
+                        >
+                            <li className={`d-flex list-group-item note${note.completed ? ' completed' : ''}`} >
+                                <div className='d-flex align-items-center'>
+                                    <input
+                                        type="checkbox"
+                                        checked={note.completed}
+                                        onChange={() => { onCompleteNote(note) }}
+                                    />&nbsp;&nbsp;
                                 <div className={'info'}>
-                                    <strong>{note.title}</strong>
-                                    <small>{new Date(note.date).toLocaleString()}</small>
+                                        <strong>{note.title}</strong>
+                                        <small>{new Date(note.date).toLocaleString()}</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-danger btn-sm"
-                                    onClick={() => props.onRemove(note.id)}
-                                >
-                                    &times;  {/* Крестик */}
-                                </button>
-                            </div>
-                        </li>
-                    </CSSTransition>
-                ))
-            }
+                                <div>
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-danger btn-sm"
+                                        onClick={() => onRemove(note.id)}
+                                    >
+                                        &times;  {/* Крестик */}
+                                    </button>
+                                </div>
+                            </li>
+                        </CSSTransition>
+                    ))
 
-        </TransitionGroup>
+                    }
+
+                </TransitionGroup>
+                : <div>Здесь пока нету заметок...</div>
+            }
+        </>
     )
 }
 

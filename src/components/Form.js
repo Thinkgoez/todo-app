@@ -1,41 +1,54 @@
 //@flow
 import *as React from 'react';
-import { useState } from 'react';
-import { connect } from 'react-redux';
-import {show} from '../redux/alertReducer'
-import { addNote } from '../redux/firebaseReducer';
+import { Formik } from "formik"
 
-type Props = {
-    show: (s: string) => void,
-    addNote: (s: string) => void
-};
 
-const Form = ({show, addNote}): React.Node => {
-    const [value, setValue] : [string, ((string => string) | string) => void] = useState('');
-
-    const submitHandler = (event: SyntheticEvent<HTMLButtonElement>) : void => {
-        event.preventDefault();
-
-        if (value.trim()) {
-            addNote(value.trim())
-            setValue('');
-        } else {
-            show('Введите название заметки!');
-        }
-    }
+const Form = ({ handleSubmit, ...props }) => {
     return (
-        <form onSubmit={submitHandler}>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите название разметки"
-                    value={value}
-                    onChange={e => setValue(e.target.value)}
-                />
-            </div>
-        </form>
-    );
+        <Formik
+            initialValues={{ formValue: '' }}
+            validate={values => {
+                const errors = {};
+                if (!values.formValue) {
+                    errors.formValue = 'Required';
+                }
+                return errors;
+            }}
+            onSubmit={(values, { resetForm }) => {
+                handleSubmit(values)
+                resetForm({ values: { formValue: '' } })
+            }}
+        >
+            {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                ...props
+            }) => (
+                    <>
+                        {errors.formValue && touched.formValue && errors.formValue}
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    name="formValue"
+                                    className="form-control"
+                                    placeholder="Введите название разметки"
+                                    value={values.formValue}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                            </div>
+                        </form>
+                    </>
+                )
+            }
+        </Formik >
+    )
 }
 
-export default (connect<Props, _, _, _, _, _,>(null, {show, addNote})(Form): React.AbstractComponent<{}>)
+export default Form
