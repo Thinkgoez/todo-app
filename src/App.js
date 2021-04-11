@@ -66,3 +66,8 @@ const hocApp = withFirebaseAuth({
     firebaseAppAuth,
 })(App);
 export default connect(null, { setUserID, clearData })(hocApp)
+
+
+// Add WebSocket.io
+// some design changes
+// layout all

@@ -47,7 +47,7 @@ const Form = ({ handleSubmit, ...props }) => {
                     </>
                 )
             }
-        </Formik >
+        </Formik>
     )
 }
 

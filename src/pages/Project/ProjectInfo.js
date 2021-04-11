@@ -43,6 +43,7 @@ const mapS = state => ({
     loading: state.firebase.loading,
     currentProject: state.firebase.currentProject,
     notes: state.firebase.notes,
+    userID: state.firebase.userID,
 })
 
 export default connect(mapS, { removeProject, addNote, fetchNotes, removeNote, onChangeCompleteNote })(ProjectInfo)
